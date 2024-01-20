@@ -1,7 +1,9 @@
 "use client";
-import { Box, Grid, TextField, Button } from "@mui/material";
+import { Box, Grid, TextField, Button, Alert, AlertTitle } from "@mui/material";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import useUser from "@/app/hooks/useUser";
+import CreateAlert from "../Alert";
 
 export interface Info {
   name: string;
@@ -10,8 +12,9 @@ export interface Info {
 }
 
 const CreateView = () => {
-  // path
   const router = useRouter();
+
+  const { fetchUserCraete } = useUser();
 
   // State
   const [userInfo, setUserInfo] = useState<Info>({
@@ -26,17 +29,6 @@ const CreateView = () => {
       ...prevState,
       [field]: value,
     }));
-  };
-
-  const fetchUserCraete = async (params: Info) => {
-    const { name, email, password } = params;
-    await fetch("/api/users", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ name, email, password }),
-    });
   };
 
   return (
@@ -79,6 +71,7 @@ const CreateView = () => {
             />
           </Grid>
         </Grid>
+
         <Box mt={2}>
           <Button
             variant="contained"

@@ -2,13 +2,7 @@
 import { Box, Grid, TextField, Button } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-
-interface Info {
-  id: number;
-  name: string;
-  email: string;
-  password: string;
-}
+import useUser from "@/app/hooks/useUser";
 
 const CreateView = () => {
   // SearchParams
@@ -16,16 +10,15 @@ const CreateView = () => {
   const currentUrl = window.location.pathname;
   const id = Number(currentUrl.split("/").pop());
 
-  // State
-  const [isUpdate, setIsUpdate] = useState<boolean>(false);
-  const [userInfo, setUserInfo] = useState<Info>({
-    id: 0,
-    name: "",
-    email: "",
-    password: "",
-  });
-
-  // Hook
+  const {
+    fetchUserUpdate,
+    fetchUserDetail,
+    fetchUserDelete,
+    setUserInfo,
+    setIsUpdate,
+    isUpdate,
+    userInfo,
+  } = useUser();
 
   // Hook
   const onChange = (field: string, value: string) => {
@@ -33,50 +26,6 @@ const CreateView = () => {
       ...prevState,
       [field]: value,
     }));
-  };
-
-  const fetchUserUpdate = async (params: Info) => {
-    const { id, name, email, password } = params;
-
-    const response = await fetch(`/api/users/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ id, name, email, password }),
-    });
-    const data = await response.json();
-    if (data.result) {
-      alert("저장되었습니다.");
-      setIsUpdate(false);
-      fetchUserDetail(id);
-    }
-  };
-
-  const fetchUserDetail = async (id: number) => {
-    const response = await fetch(`/api/users/${id}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-
-      body: JSON.stringify({ id }),
-    });
-    const data = await response.json();
-    setUserInfo(data.result);
-  };
-
-  const fetchUserDelete = async (id: number) => {
-    const response = await fetch(`/api/users/${id}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-
-      body: JSON.stringify({ id }),
-    });
-    const data = await response.json();
-    console.log(data);
   };
 
   useEffect(() => {

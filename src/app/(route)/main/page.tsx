@@ -1,33 +1,22 @@
 "use client";
 
 import BasicTable from "@/app/components/Table";
+import useUser, { Info } from "@/app/hooks/useUser";
 import { Box, Button } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export interface Info {
-  id: number;
-  name: string;
-  email: string;
-  password: string;
-}
 const index = () => {
-  const [infoList, setInfoList] = useState<Info[]>([]);
-
   const router = useRouter();
 
-  const fetchInfoList = async () => {
-    const response = await fetch("/api/users", {
-      method: "GET",
-    });
+  // state
+  const { infoList, fetchInfoList } = useUser();
 
-    const data = await response.json();
-    setInfoList(data.result);
-  };
-
+  // Hook
   useEffect(() => {
     fetchInfoList();
   }, []);
+
   return (
     <div
       style={{

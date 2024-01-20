@@ -1,22 +1,18 @@
 "use client";
 
 import * as React from "react";
-import LoadingButton from "@mui/lab/LoadingButton";
-import SaveIcon from "@mui/icons-material/Save";
 import Stack from "@mui/material/Stack";
+import { Button } from "@mui/material";
+import { useRouter } from "next/navigation";
 
 const Home = () => {
+  const router = useRouter();
+
   return (
     <Stack direction="row" spacing={2}>
-      <LoadingButton
-        loading
-        loadingPosition="start"
-        startIcon={<SaveIcon />}
-        variant="outlined"
-        color="primary"
-      >
+      <Button onClick={() => router.push("/main")} variant="outlined">
         시작하기
-      </LoadingButton>
+      </Button>
     </Stack>
   );
 };
